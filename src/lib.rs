@@ -13,6 +13,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//! This is comment for the module itself
+//! Here too.
+//!
+//! # Chapter
+//! *another*
+//!
+//! `what about this`
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! dbc_panic {
@@ -33,6 +41,7 @@ macro_rules! dbc_panic {
     })
 }
 
+/// This is a comment
 #[macro_export]
 macro_rules! sv {
     ($var:ident) => (format!("   {}={:?}\n", stringify!($var), $var));
@@ -44,12 +53,12 @@ macro_rules! sv {
 /// For example, you can define a Fibonacci sequence iterator like so:
 /// 
 /// ```
-/// # #![feature(phase)]
-/// # #[phase(plugin)] extern crate dbc;
-/// # fn main() {
-/// #     let _ =
-/// #     ;
-/// # }
+/// #![feature(phase)]
+/// #[phase(plugin)] extern crate dbc;
+/// fn main() {
+///     let _ =
+///     ;
+/// }
 /// ```
 #[macro_export]
 macro_rules! require {

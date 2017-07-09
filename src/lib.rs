@@ -48,18 +48,7 @@ macro_rules! sv {
     ($var:ident, $($arg:tt)*) => (format!("{}{}", sv!($var), sv!($($arg)*)));
 }
 
-/// Require asserts a condition is true.
-///
-/// For example, you can define a Fibonacci sequence iterator like so:
-/// 
-/// ```
-/// #![feature(phase)]
-/// #[phase(plugin)] extern crate dbc;
-/// fn main() {
-///     let _ =
-///     ;
-/// }
-/// ```
+/// Comment
 #[macro_export]
 macro_rules! require {
     ($cond:expr) => (if cfg!(debug_assertions) {

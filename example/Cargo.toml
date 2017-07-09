@@ -1,0 +1,7 @@
+[package]
+name = "example"
+version = "0.1.0"
+authors = ["Luis Pabón <lpabon@gmail.com>"]
+
+[dependencies]
+dbc = { path = ".." }

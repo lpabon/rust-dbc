@@ -90,6 +90,36 @@ macro_rules! formatvar {
     ($var:ident, $($arg:tt)*) => (format!("{} {}", formatvar!($var), formatvar!($($arg)*)));
 }
 
+/// Precondondition tests
+///
+/// This macro is used to assert preconditions. Any variables passed
+/// will stringify both the variable and their values. Structs can be 
+/// displayed only if they have the `[#derive(Debug)]` attribute.
+///
+/// # Examples
+///
+/// ```should_panic
+/// # #![allow(unreachable_code)]
+/// # #[macro_use] extern crate dbc;
+///
+/// fn foo(x: i32, y: i32) {
+///     require!(x != 0, x, y);
+///     require!(y < 0, x, y);
+///
+///     // Do some work here ...
+/// }
+///
+/// fn main() {
+///     // No asserts
+///     foo(10, -100);
+///
+///     // Require fails
+///     foo(0, 100); 
+///
+///     // Require fails
+///     foo(10, 100); 
+/// }
+/// ```
 #[macro_export]
 macro_rules! require {
     ($cond:expr) => (if cfg!(debug_assertions) {
@@ -101,24 +131,37 @@ macro_rules! require {
 }
 
 #[macro_export]
-/// The entry point for panic of Rust threads.
+/// Postcondition tests
 ///
-/// This macro is used to inject panic into a Rust thread, causing the thread to
-/// panic entirely. Each thread's panic can be reaped as the `Box<Any>` type,
-/// and the single-argument form of the `panic!` macro will be the value which
-/// is transmitted.
-///
-/// The multi-argument form of this macro panics with a string and has the
-/// `format!` syntax for building a string.
+/// This macro is used to assert postconditions. Any variables passed
+/// will stringify both the variable and their values. Structs can be 
+/// displayed only if they have the `[#derive(Debug)]` attribute.
 ///
 /// # Examples
 ///
 /// ```should_panic
 /// # #![allow(unreachable_code)]
-/// panic!();
-/// panic!("this is a terrible mistake!");
-/// panic!(4); // panic with the value of 4 to be collected elsewhere
-/// panic!("this is a {} {message}", "fancy", message = "message");
+/// # #[macro_use] extern crate dbc;
+///
+/// fn foo(x: i32, y: i32) -> i32 {
+///     require!(x != 0, x, y);
+///     require!(y < 0, x, y);
+///
+///     let sum = x + y;
+///
+///     // Ensure passes
+///     ensure!(sum == x + y, sum, x, y);
+///
+///     // Ensure fails
+///     ensure!(sum != x + y, sum, x, y);
+///
+///     sum
+/// }
+///
+/// fn main() {
+///     // No asserts
+///     let a = foo(10, -100);
+/// }
 /// ```
 macro_rules! ensure {
     ($cond:expr) => (if cfg!(debug_assertions) {
@@ -140,6 +183,17 @@ mod tests {
     #[test]
     fn test_require_does_not_assert() {
         require!(true);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_ensure_asserts() {
+        ensure!(false);
+    }
+
+    #[test]
+    fn test_ensure_does_not_assert() {
+        ensure!(true);
     }
 
     #[test]

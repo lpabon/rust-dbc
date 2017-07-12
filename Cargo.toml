@@ -1,6 +1,6 @@
 [package]
 name = "dbc"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Luis Pabón <lpabon@gmail.com>"]
 description = "Simple design by contract assertions"
 repository = "https://github.com/lpabon/rust-dbc"
@@ -8,6 +8,7 @@ homepage = "https://github.com/lpabon/rust-dbc"
 keyworks = ["dbc", "hoare", "assert"]
 categories = ["development-tools::debugging", "development-tools::testing"]
 license = "LGPL-3.0"
+readme = "README.md"
 
 [badges]
 travis-ci = { repository = "lpabon/rust-dbc", branch = "master"  }

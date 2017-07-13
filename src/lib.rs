@@ -21,6 +21,11 @@
 //! `{P} C {Q}`, where `{P}` is the precondition before
 //! executing command `C`, and `{Q}` is the postcondition.
 //!
+//! Like `debug_assert!`, dbc macros are only enabled in non
+//! optimized builds by default. An optimized build will omit all
+//! dbc macro statements unless `-C debug-assertions` is passed to the
+//! compiler.
+//!
 //! ## See Also
 //!
 //! * http://en.wikipedia.org/wiki/Design_by_contract

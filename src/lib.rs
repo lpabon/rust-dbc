@@ -130,7 +130,6 @@ macro_rules! require {
     })
 }
 
-#[macro_export]
 /// Postcondition tests
 ///
 /// This macro is used to assert postconditions. Any variables passed
@@ -163,6 +162,7 @@ macro_rules! require {
 ///     let a = foo(10, -100);
 /// }
 /// ```
+#[macro_export]
 macro_rules! ensure {
     ($cond:expr) => (if cfg!(debug_assertions) {
         dbc_panic!("ENSURE", $cond)

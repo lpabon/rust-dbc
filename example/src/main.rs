@@ -15,6 +15,14 @@ struct Rectangle {
     width: i32,
 }
 
+impl Rectangle {
+    fn area(&self) -> i32 {
+        invariant!(self);
+
+        self.length * self.width
+    }
+}
+
 impl Invariant for Rectangle {
     fn invariant(&self) -> bool {
         self.length > 0 && self.width > 0
@@ -40,5 +48,5 @@ fn main() {
         length: 100,
         width: 0,
     };
-    invariant!(r, msg);
+    println!("Area is {:?}", r.area());
 }

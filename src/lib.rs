@@ -55,7 +55,7 @@ macro_rules! dbc_panic {
 /// Stringify one or more variables and their values
 ///
 /// This macro is used by other macros in `rust-dbc` to output
-/// the variables requested and their values. Structs can be 
+/// the variables requested and their values. Structs can be
 /// displayed only if they have the `[#derive(Debug)]` attribute.
 ///
 /// # Examples
@@ -93,7 +93,7 @@ macro_rules! formatvar {
 /// Precondondition tests
 ///
 /// This macro is used to assert preconditions. Any variables passed
-/// will stringify both the variable and their values. Structs can be 
+/// will stringify both the variable and their values. Structs can be
 /// displayed only if they have the `[#derive(Debug)]` attribute.
 ///
 /// # Examples
@@ -114,10 +114,10 @@ macro_rules! formatvar {
 ///     foo(10, -100);
 ///
 ///     // Require fails
-///     foo(0, 100); 
+///     foo(0, 100);
 ///
 ///     // Require fails
-///     foo(10, 100); 
+///     foo(10, 100);
 /// }
 /// ```
 #[macro_export]
@@ -133,7 +133,7 @@ macro_rules! require {
 /// Postcondition tests
 ///
 /// This macro is used to assert postconditions. Any variables passed
-/// will stringify both the variable and their values. Structs can be 
+/// will stringify both the variable and their values. Structs can be
 /// displayed only if they have the `[#derive(Debug)]` attribute.
 ///
 /// # Examples
@@ -172,11 +172,56 @@ macro_rules! ensure {
     })
 }
 
-/// blah
+/// The `Invariant` trait allows for asserting an object
+///
+/// Implementors of the `Invariant` trait can then use the `invariant!`
+/// macro to test their objects are safe to use.
+///
+/// See the `invariant!` macro for examples
 pub trait Invariant {
     fn invariant(&self) -> bool;
 }
 
+/// Invariant condition assertion
+///
+/// Checks that an object condition is true at all times. The
+/// object must implement the `Invariant` trait.
+///
+/// # Examples
+///
+/// ```should_panic
+/// # #![allow(unreachable_code)]
+/// # #[macro_use] extern crate dbc;
+/// use dbc::Invariant;
+/// #[derive(Debug)]
+/// struct Rectangle {
+///     length: i32,
+///     width: i32,
+/// }
+///
+/// impl Rectangle {
+///     fn area(&self) -> i32 {
+///         invariant!(self);
+///
+///         self.length * self.width
+///     }
+/// }
+///
+/// impl Invariant for Rectangle {
+///     fn invariant(&self) -> bool {
+///         self.length > 0 && self.width > 0
+///     }
+/// }
+///
+/// fn main() {
+///     let msg = "My message";
+///     let r = Rectangle{
+///        length: 100,
+///        width: 0,
+///     };
+///
+///     println!("Area is {:?}", r.area());
+/// }
 #[macro_export]
 macro_rules! invariant {
     ($obj:ident) => (if cfg!(debug_assertions){
@@ -184,14 +229,6 @@ macro_rules! invariant {
     });
     ($obj:ident, $($args:tt)*) => (if cfg!(debug_assertions){
         dbc_panic!("INVARIANT", $obj.invariant(), $obj, $($args)*)
-    })
-}
-macro_rules! invariante {
-    ($obj:ident) => (if cfg!(debug_assertions){
-        dbc_panic!("INVARIANT", $crate::dbc_invariant(&$obj))
-    });
-    ($obj:ident, $($args:tt)*) => (if cfg!(debug_assertions){
-        dbc_panic!("INVARIANT", $crate::dbc_invariant(&$obj), $($args)* )
     })
 }
 

@@ -172,8 +172,46 @@ macro_rules! ensure {
     })
 }
 
+/// blah
+pub trait Invariant {
+    fn invariant(&self) -> bool;
+}
+
+#[macro_export]
+macro_rules! invariant {
+    ($obj:ident) => (if cfg!(debug_assertions){
+        dbc_panic!("INVARIANT", $obj.invariant(), $obj)
+    });
+    ($obj:ident, $($args:tt)*) => (if cfg!(debug_assertions){
+        dbc_panic!("INVARIANT", $obj.invariant(), $obj, $($args)*)
+    })
+}
+macro_rules! invariante {
+    ($obj:ident) => (if cfg!(debug_assertions){
+        dbc_panic!("INVARIANT", $crate::dbc_invariant(&$obj))
+    });
+    ($obj:ident, $($args:tt)*) => (if cfg!(debug_assertions){
+        dbc_panic!("INVARIANT", $crate::dbc_invariant(&$obj), $($args)* )
+    })
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
+
+    #[derive(Debug)]
+    struct Rectangle {
+        length: i32,
+        width: i32,
+    }
+
+    impl Invariant for Rectangle {
+        fn invariant(&self) -> bool {
+            self.length > 0 && self.width > 0
+        }
+    }
+
+
     #[test]
     #[should_panic]
     fn test_require_asserts() {
@@ -213,4 +251,25 @@ mod tests {
         assert!(formatvar!(msg) == "msg=\"My message\"");
         assert!(formatvar!(msg,a,b) == "msg=\"My message\" a=34 b=BB(AA(234))");
     } 
+
+    #[test]
+    fn test_invariant() {
+        let r = Rectangle{
+            length: 100,
+            width: 30,
+        };
+
+        invariant!(r);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_invariant_asserts() {
+        let r = Rectangle{
+            length: 100,
+            width: 0,
+        };
+
+        invariant!(r);
+    }
 }

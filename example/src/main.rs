@@ -1,12 +1,25 @@
 #[macro_use]
 extern crate dbc;
 
+use dbc::Invariant;
+
 #[derive(Debug)]
 struct AA(i32);
 
 #[derive(Debug)]
 struct BB(AA);
 
+#[derive(Debug)]
+struct Rectangle {
+    length: i32,
+    width: i32,
+}
+
+impl Invariant for Rectangle {
+    fn invariant(&self) -> bool {
+        self.length > 0 && self.width > 0
+    }
+}
 
 fn main() {
     println!("Starting...");
@@ -21,5 +34,11 @@ fn main() {
     require!(true);
     let msg = "This is a test";
     let a = 3;
-    require!(false, msg, a);
+    require!(true, msg, a);
+
+    let r = Rectangle{
+        length: 100,
+        width: 0,
+    };
+    invariant!(r, msg);
 }

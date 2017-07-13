@@ -1,6 +1,6 @@
 [package]
 name = "dbc"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Luis Pabón <lpabon@gmail.com>"]
 description = "Simple design by contract assertions"
 repository = "https://github.com/lpabon/rust-dbc"

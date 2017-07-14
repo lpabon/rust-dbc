@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//! # Design-by-Contract for Go
+//! # Design-by-Contract for Rust
 //!
 //! Design by Contract is a programming methodology
 //! which binds the caller and the function called to a

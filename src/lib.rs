@@ -227,6 +227,7 @@ pub trait Invariant {
 ///
 ///     println!("Area is {:?}", r.area());
 /// }
+/// ```
 #[macro_export]
 macro_rules! invariant {
     ($obj:ident) => (if cfg!(debug_assertions){
@@ -292,7 +293,7 @@ mod tests {
         assert!(formatvar!(b) == "b=BB(AA(234))");
         assert!(formatvar!(msg) == "msg=\"My message\"");
         assert!(formatvar!(msg,a,b) == "msg=\"My message\" a=34 b=BB(AA(234))");
-    } 
+    }
 
     #[test]
     fn test_invariant() {
